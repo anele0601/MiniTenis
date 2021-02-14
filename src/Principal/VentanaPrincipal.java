@@ -16,7 +16,9 @@ public class VentanaPrincipal {
 	 */
 	public VentanaPrincipal() {
 		ventana = new JFrame();
-		ventana.setBounds(100, 50, 600, 400);
+		ventana.setBounds(450, 50, 500, 700);
+		ventana.setResizable(false);
+		ventana.setTitle(" MiniTenis ");
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
