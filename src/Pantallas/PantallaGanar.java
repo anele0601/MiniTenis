@@ -1,6 +1,7 @@
 package Pantallas;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import Principal.Interface;
 
@@ -34,5 +35,17 @@ public class PantallaGanar implements Interface {
     }
 
     public void redimensionarFondo() {
+    }
+
+    @Override
+    public void pulsarTeclado(KeyEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void soltarTeclado(KeyEvent e) {
+        // TODO Auto-generated method stub
+
     }
 }

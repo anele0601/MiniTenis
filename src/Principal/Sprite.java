@@ -9,7 +9,11 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Clase Sprite.
+ * Clase Sprite. Simula las pelotas y las barras con las que jugamos. Define su
+ * aspecto y controla su movimiento.
+ * 
+ * @author Elena Nofuentes
+ * 
  */
 
 public class Sprite {
@@ -56,6 +60,7 @@ public class Sprite {
         Graphics g = buffer.getGraphics();
         g.setColor(color);
         g.fillRect(0, 0, ancho, alto);
+
     }
 
     /**

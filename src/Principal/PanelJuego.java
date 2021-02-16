@@ -12,6 +12,9 @@ import javax.swing.JPanel;
 
 import Pantallas.PantallaInicio;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.*;
+
 /**
  * Clase Panel Juego.
  * 
@@ -30,6 +33,19 @@ public class PanelJuego extends JPanel implements Runnable, MouseListener, Mouse
         this.addMouseMotionListener(this);
         this.addComponentListener(this);
         pantalla = new PantallaInicio(this);
+        this.setFocusable(true);
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                pantalla.pulsarTeclado(e);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                pantalla.soltarTeclado(e);
+            }
+
+        });
 
         new Thread(this).start();
     }
@@ -93,8 +109,8 @@ public class PanelJuego extends JPanel implements Runnable, MouseListener, Mouse
     /** Método que define la acción del hilo */
     @Override
     public void run() {
-        pantalla.ejecutarFrame();
         while (true) {
+            pantalla.ejecutarFrame();
             repaint();
             Toolkit.getDefaultToolkit().sync();
         }
