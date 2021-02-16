@@ -19,7 +19,7 @@ import java.awt.event.*;
  * Clase Panel Juego.
  * 
  * @author Elena Nofuentes
- * @version 1.0
+ * @version 1.3
  */
 
 public class PanelJuego extends JPanel implements Runnable, MouseListener, MouseMotionListener, ComponentListener {
@@ -46,7 +46,6 @@ public class PanelJuego extends JPanel implements Runnable, MouseListener, Mouse
             }
 
         });
-
         new Thread(this).start();
     }
 

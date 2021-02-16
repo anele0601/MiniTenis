@@ -127,13 +127,13 @@ public class Sprite {
 
     public void moverDerecha(int width, int anchoRaqueta) {
         if (posX + anchoRaqueta < width) {
-            posX = posX + 5;
+            posX = posX + 10;
         }
     }
 
     public void moverIzquierda() {
         if (posX >= 0) {
-            posX = posX - 5;
+            posX = posX - 10;
         }
     }
 
@@ -206,4 +206,13 @@ public class Sprite {
     public void setVelX(int velX) {
         this.velX = velX;
     }
+
+    public int getVelY() {
+        return velY;
+    }
+
+    public void setVelY(int velY) {
+        this.velY = velY;
+    }
+
 }
