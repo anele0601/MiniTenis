@@ -125,6 +125,18 @@ public class Sprite {
         posX = (posX + velX);
     }
 
+    public void moverDerecha(int width, int anchoRaqueta) {
+        if (posX + anchoRaqueta < width) {
+            posX = posX + 5;
+        }
+    }
+
+    public void moverIzquierda() {
+        if (posX >= 0) {
+            posX = posX - 5;
+        }
+    }
+
     /**
      * Metodo para saber cuando los sprites colisionan.
      * 

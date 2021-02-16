@@ -36,6 +36,7 @@ public class PantallaJuego implements Interface {
     public void inicializarPantalla() {
         pelota = new Sprite("imagenes/pelota.png", 50, 50, 10, 10, 10, 10);
         raqueta = new Sprite(Utilidades.NEGRO, 100, 20, (panel.getWidth() / 2) - 50, panel.getHeight() / 2 + 240, 4, 0);
+
     }
 
     @Override
@@ -87,15 +88,12 @@ public class PantallaJuego implements Interface {
 
     @Override
     public void pulsarTeclado(KeyEvent e) {
-        // TODO Auto-generated method stub
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            System.out.println("Hola");
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            raqueta.moverIzquierda();
         }
-
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            System.out.println("Hola");
+            raqueta.moverDerecha(panel.getWidth(), raqueta.getAncho());
         }
-
     }
 
     @Override
