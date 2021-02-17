@@ -83,7 +83,10 @@ public class PantallaInicio implements Interface {
         g.fillRect(90, (panel.getHeight() / 2) - 25, 320, 40);
         g.setColor(colorLetraInicio);
         g.setFont(Utilidades.FUENTE_PEQUE);
-        g.drawString("- Pulsa para comenzar a jugar - ", 105, panel.getHeight() / 2);
+        g.drawString("- Pulsa para 1 o 2 para jugar - ", 105, panel.getHeight() / 2);
+        g.setColor(Utilidades.NEGRO);
+        g.drawString(" 1 = Un jugador ", (panel.getWidth() / 2) - 75, (panel.getHeight() / 2) + 60);
+        g.drawString(" 2 = Dos jugadores ", (panel.getWidth() / 2) - 75, (panel.getHeight() / 2) + 85);
         for (int i = 0; i < pelotas.size(); i++) {
             pelotas.get(i).estampar(g);
         }
@@ -105,7 +108,6 @@ public class PantallaInicio implements Interface {
 
     @Override
     public void pulsarRaton(MouseEvent e) {
-        panel.setPantalla(new PantallaJuego(panel));
     }
 
     @Override
@@ -120,12 +122,11 @@ public class PantallaInicio implements Interface {
 
     @Override
     public void pulsarTeclado(KeyEvent e) {
-
-    }
-
-    @Override
-    public void soltarTeclado(KeyEvent e) {
-        // TODO Auto-generated method stub
-
+        if (e.getKeyCode() == KeyEvent.VK_1) {
+            panel.setPantalla(new PantallaJuego(panel, false));
+        }
+        if (e.getKeyCode() == KeyEvent.VK_2) {
+            panel.setPantalla(new PantallaJuego(panel, true));
+        }
     }
 }

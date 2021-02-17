@@ -16,11 +16,12 @@ import Principal.Sprite;
 
 public class PantallaJuego implements Interface {
     private PanelJuego panel;
-    private Sprite pelota, raqueta, pelotaDos, pelotaTres, pelotaFantasmaUno, pelotaFantasmaDos;
+    private Sprite pelota, raqueta, raquetaDos, pelotaDos, pelotaTres, pelotaFantasmaUno, pelotaFantasmaDos;
     private int puntuacion;
     private double contadorT;
     private DecimalFormat formato = new DecimalFormat("#.##");
     private String tiempo;
+    private boolean jugador;
 
     public PantallaJuego(PanelJuego panel) {
         this.panel = panel;
@@ -29,11 +30,29 @@ public class PantallaJuego implements Interface {
         inicializarPantalla();
     }
 
+    public PantallaJuego(PanelJuego panel, boolean jugador) {
+        this.panel = panel;
+        this.jugador = jugador;
+        puntuacion = 0;
+        tiempo = "";
+        inicializarPantalla();
+    }
+
     @Override
     public void inicializarPantalla() {
-        pelota = new Sprite("imagenes/pelota.png", 50, 50, 10, 10, 5, 5);
-        raqueta = new Sprite(Utilidades.NEGRO, 100, 20, (panel.getWidth() / 2) - 50, panel.getHeight() / 2 + 240, 4, 0);
-        contadorT = System.nanoTime();
+        if (!jugador) {
+            pelota = new Sprite("imagenes/pelota.png", 50, 50, 10, 10, 5, 5);
+            raqueta = new Sprite(Utilidades.NEGRO, 100, 20, (panel.getWidth() / 2) - 50, panel.getHeight() / 2 + 240, 4,
+                    0);
+            contadorT = System.nanoTime();
+        } else {
+            pelota = new Sprite("imagenes/pelota.png", 50, 50, 10, 10, 5, 5);
+            raqueta = new Sprite(Utilidades.NEGRO, 100, 20, (panel.getWidth() / 2) - 50, panel.getHeight() / 2 + 240, 4,
+                    0);
+            raquetaDos = new Sprite(Utilidades.NEGRO, 100, 20, (panel.getWidth() / 2) + 50, panel.getHeight() / 2 - 240,
+                    4, 0);
+            contadorT = System.nanoTime();
+        }
     }
 
     @Override
@@ -41,6 +60,9 @@ public class PantallaJuego implements Interface {
         rellenarFondo(g);
         pelota.estampar(g);
         raqueta.estampar(g);
+        if (jugador) {
+            raquetaDos.estampar(g);
+        }
 
         // Pintamos la puntuación
         g.setColor(Utilidades.VERDE);
@@ -167,11 +189,15 @@ public class PantallaJuego implements Interface {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             raqueta.moverDerecha(panel.getWidth(), raqueta.getAncho());
         }
-    }
 
-    @Override
-    public void soltarTeclado(KeyEvent e) {
-        // TODO Auto-generated method stub
-
+        // 2 jugadores
+        if (jugador) {
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                raquetaDos.moverIzquierda();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                raquetaDos.moverDerecha(panel.getWidth(), raqueta.getAncho());
+            }
+        }
     }
 }
