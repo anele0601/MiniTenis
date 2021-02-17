@@ -27,6 +27,7 @@ public class PantallaGanar implements Interface {
 
     @Override
     public void pintarPantalla(Graphics g) {
+
         g.setColor(Color.BLUE);
         g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
     }

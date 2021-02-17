@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 
 import java.awt.Color;
 import Principal.Interface;
@@ -27,6 +28,7 @@ public class PantallaInicio implements Interface {
     private ArrayList<Sprite> pelotas;
     private Image fondoR;
     private BufferedImage fondo;
+    private JButton boton;
 
     private final int N_PELOTAS = 3;
 
@@ -34,6 +36,24 @@ public class PantallaInicio implements Interface {
         panel = panelJuego;
         pelotas = new ArrayList<>();
         inicializarPantalla();
+    }
+
+    /**
+     * Metodo para retornar la velocidad aleatoria.
+     * 
+     * @return entero entre -15 y 15.
+     */
+    public int velocidad() {
+        return (int) (Math.random() * 31) - 15;
+    }
+
+    /**
+     * Método para rellenar el fondo del componente.
+     * 
+     * @param g gráfico.
+     */
+    private void rellenarFondo(Graphics g) {
+        g.drawImage(fondoR, 0, 0, null);
     }
 
     @Override
@@ -52,15 +72,6 @@ public class PantallaInicio implements Interface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Método para rellenar el fondo del componente.
-     * 
-     * @param g gráfico.
-     */
-    private void rellenarFondo(Graphics g) {
-        g.drawImage(fondoR, 0, 0, null);
     }
 
     @Override
@@ -85,15 +96,11 @@ public class PantallaInicio implements Interface {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        moverPelota();
-        // Cambiamos las letras de color
-        colorLetraInicio = colorLetraInicio == Utilidades.BLANCO ? Utilidades.VERDE : Utilidades.BLANCO;
-    }
-
-    public void moverPelota() {
         for (int i = 0; i < pelotas.size(); i++) {
             pelotas.get(i).mover(panel.getWidth(), panel.getHeight());
         }
+        // Cambiamos las letras de color
+        colorLetraInicio = colorLetraInicio == Utilidades.BLANCO ? Utilidades.VERDE : Utilidades.BLANCO;
     }
 
     @Override
@@ -111,18 +118,8 @@ public class PantallaInicio implements Interface {
         fondoR = fondo.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
     }
 
-    /**
-     * Metodo para retornar la velocidad aleatoria.
-     * 
-     * @return entero entre -15 y 15.
-     */
-    public int velocidad() {
-        return (int) (Math.random() * 31) - 15;
-    }
-
     @Override
     public void pulsarTeclado(KeyEvent e) {
-        // TODO Auto-generated method stub
 
     }
 

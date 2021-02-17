@@ -16,7 +16,7 @@ import Principal.Sprite;
 
 public class PantallaJuego implements Interface {
     private PanelJuego panel;
-    private Sprite pelota, raqueta;
+    private Sprite pelota, raqueta, pelotaDos, pelotaTres, pelotaFantasmaUno, pelotaFantasmaDos;
     private int puntuacion;
     private double contadorT;
     private DecimalFormat formato = new DecimalFormat("#.##");
@@ -27,7 +27,6 @@ public class PantallaJuego implements Interface {
         puntuacion = 0;
         tiempo = "";
         inicializarPantalla();
-
     }
 
     @Override
@@ -46,10 +45,24 @@ public class PantallaJuego implements Interface {
         // Pintamos la puntuación
         g.setColor(Utilidades.VERDE);
         g.setFont(Utilidades.FUENTE_PEQUE);
-        g.drawString("" + puntuacion, panel.getWidth() - 50, panel.getHeight() - 30);
+        g.drawString("" + puntuacion, panel.getWidth() - 40, panel.getHeight() - 20);
 
         // Pintamos el tiempo
-        g.drawString(tiempo = formato.format((System.nanoTime() - contadorT) / 1e9), 40, 40);
+        g.drawString(tiempo = formato.format((System.nanoTime() - contadorT) / 1e9), 30, 30);
+
+        if (pelotaDos != null) {
+            pelotaDos.estampar(g);
+        }
+        if (pelotaTres != null) {
+            pelotaTres.estampar(g);
+        }
+
+        if (pelotaFantasmaDos != null) {
+            pelotaFantasmaUno.estampar(g);
+        }
+        if (pelotaFantasmaDos != null) {
+            pelotaFantasmaDos.estampar(g);
+        }
     }
 
     /**
@@ -66,22 +79,69 @@ public class PantallaJuego implements Interface {
         return (int) (Math.random() * 31) - 15;
     }
 
+    public void sumarPelota() {
+        if (tiempo.contains("10,0")) {
+            pelotaDos = new Sprite("imagenes/pelota.png", 50, 50, panel.getWidth(), 10, 6, 6);
+        }
+        if (tiempo.contains("25,0")) {
+            pelotaTres = new Sprite("imagenes/pelota.png", 50, 50, 10, 10, 5, 5);
+        }
+        // Pelotas fantasmas para engañar al jugador y aumentar la dificultad
+        if (tiempo.contains("40,0")) {
+            pelotaFantasmaUno = new Sprite("imagenes/pelota.png", 50, 50, 10, 10, 5, 5);
+        }
+        if (tiempo.contains("50,0")) {
+            pelotaFantasmaDos = new Sprite("imagenes/pelota.png", 50, 50, panel.getWidth(), 10, 5, 5);
+        }
+    }
+
     @Override
     public void ejecutarFrame() {
         try {
-            Thread.sleep(25);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        pelota.mover(panel.getWidth(), panel.getHeight());
-        if (pelota.colisionar(raqueta)) {
-            pelota.setVelY(pelota.getVelY() * -1);
-            puntuacion++;
+        // Fin de Juego y/o puntuacion
+        if (pelota.getPosY() >= raqueta.getPosY() + raqueta.getAlto()) {
+            panel.setPantalla(new PantallaFin(panel, puntuacion, tiempo));
         } else {
-            if (pelota.getPosY() > raqueta.getPosY()) {
-                panel.setPantalla(new PantallaGanar(panel, puntuacion, tiempo));
+            if (pelota.colisionar(raqueta)) {
+                puntuacion++;
             }
         }
+        if (pelotaDos != null && raqueta.getPosY() + raqueta.getAlto() <= pelotaDos.getPosY()) {
+            panel.setPantalla(new PantallaFin(panel, puntuacion, tiempo));
+        } else {
+            if (pelotaDos != null && pelotaDos.colisionar(raqueta)) {
+                puntuacion++;
+            }
+        }
+
+        if (pelotaTres != null && raqueta.getPosY() + raqueta.getAlto() <= pelotaTres.getPosY()) {
+            panel.setPantalla(new PantallaFin(panel, puntuacion, tiempo));
+        } else {
+            if (pelotaTres != null && pelotaTres.colisionar(raqueta)) {
+                puntuacion++;
+            }
+        }
+
+        // Mover
+        pelota.mover(panel.getWidth(), panel.getHeight());
+        if (pelotaDos != null) {
+            pelotaDos.mover(panel.getWidth(), panel.getHeight());
+        }
+        if (pelotaTres != null) {
+            pelotaTres.mover(panel.getWidth(), panel.getHeight());
+        }
+        if (pelotaFantasmaUno != null) {
+            pelotaFantasmaUno.mover(panel.getWidth(), panel.getHeight());
+        }
+        if (pelotaFantasmaDos != null) {
+            pelotaFantasmaDos.mover(panel.getWidth(), panel.getHeight());
+        }
+
+        sumarPelota();
     }
 
     @Override
