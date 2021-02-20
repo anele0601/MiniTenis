@@ -6,6 +6,7 @@ import java.awt.EventQueue;
  * Clase principal del Juego.
  * 
  * @author Elena Nofuentes
+ * @since 20-02-2021
  * @version 1.0 {@link VentanaPrincipal#inicializar()}
  *
  */

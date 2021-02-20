@@ -4,10 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-
 import java.awt.Color;
 import Principal.Interface;
 import Principal.PanelJuego;
@@ -19,19 +16,27 @@ import java.io.IOException;
 import java.awt.Image;
 
 /**
- * Clase PantallaInicio.
+ * Clase PantallaInicio. El juego se iniciará con esta pantalla, la cual te
+ * permite elegir 1 o 2 jugadores pulsando las teclas correspondientes. Una vez
+ * pulsemos 1 ó 2, cambiaremos la pantalla a PantallaJuego.
+ * 
+ * @author Elena Nofuentes
+ * @since 20-02-2021
+ * @version 2.3
+ * @see PantallaJuego
  */
 public class PantallaInicio implements Interface {
+    /** Atributos de la clase */
+    private final int N_PELOTAS = 3;
+
     private PanelJuego panel;
     private Color colorLetraInicio;
     private int velX, velY;
     private ArrayList<Sprite> pelotas;
     private Image fondoR;
     private BufferedImage fondo;
-    private JButton boton;
 
-    private final int N_PELOTAS = 3;
-
+    /** Constructor parametrizado */
     public PantallaInicio(PanelJuego panelJuego) {
         panel = panelJuego;
         pelotas = new ArrayList<>();
@@ -56,6 +61,7 @@ public class PantallaInicio implements Interface {
         g.drawImage(fondoR, 0, 0, null);
     }
 
+    /** Método para inicializar la pantalla y sus componentes */
     @Override
     public void inicializarPantalla() {
         colorLetraInicio = Utilidades.BLANCO;
@@ -74,6 +80,10 @@ public class PantallaInicio implements Interface {
         }
     }
 
+    /**
+     * Método que se llama automáticamente para pintar la pantalla Utiliza atributos
+     * de la clase Utilidades, como los colores y las fuentes. {@link Utilidades}
+     */
     @Override
     public void pintarPantalla(Graphics g) {
         rellenarFondo(g);
@@ -85,13 +95,16 @@ public class PantallaInicio implements Interface {
         g.setFont(Utilidades.FUENTE_PEQUE);
         g.drawString("- Pulsa para 1 o 2 para jugar - ", 105, panel.getHeight() / 2);
         g.setColor(Utilidades.NEGRO);
-        g.drawString(" 1 = Un jugador ", (panel.getWidth() / 2) - 75, (panel.getHeight() / 2) + 60);
-        g.drawString(" 2 = Dos jugadores ", (panel.getWidth() / 2) - 75, (panel.getHeight() / 2) + 85);
+        g.drawString(" 1 = Un jugador ", (panel.getWidth() / 2) - 75, (panel.getHeight() / 2) + 80);
+        g.drawString(" 2 = Dos jugadores ", (panel.getWidth() / 2) - 75, (panel.getHeight() / 2) + 110);
         for (int i = 0; i < pelotas.size(); i++) {
             pelotas.get(i).estampar(g);
         }
     }
 
+    /**
+     * Método que se llama automáticamente y ejecuta el movimiento de la pantalla
+     */
     @Override
     public void ejecutarFrame() {
         try {
@@ -106,20 +119,17 @@ public class PantallaInicio implements Interface {
         colorLetraInicio = colorLetraInicio == Utilidades.BLANCO ? Utilidades.VERDE : Utilidades.BLANCO;
     }
 
-    @Override
-    public void pulsarRaton(MouseEvent e) {
-    }
-
-    @Override
-    public void moverRaton(MouseEvent e) {
-    }
-
     /** Método que redimensiona la pantalla */
     @Override
     public void redimensionarPantalla() {
         fondoR = fondo.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
     }
 
+    /**
+     * Método que controla la pulsación del teclado para iniciar la pantallaDeJuego
+     * con 1 o 2 jugadores, dependiendo de la tecla que pulsemos. Indicamos cuantos
+     * jugadores habrá mediante un booleano. false -> 1 jugador, true -> 2 jugadores
+     */
     @Override
     public void pulsarTeclado(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_1) {
@@ -128,5 +138,17 @@ public class PantallaInicio implements Interface {
         if (e.getKeyCode() == KeyEvent.VK_2) {
             panel.setPantalla(new PantallaJuego(panel, true));
         }
+    }
+
+    @Override
+    public void pulsarRaton(MouseEvent e) {
+    }
+
+    @Override
+    public void moverRaton(MouseEvent e) {
+    }
+
+    @Override
+    public void soltarTeclado(KeyEvent e) {
     }
 }

@@ -127,13 +127,13 @@ public class Sprite {
 
     public void moverDerecha(int width, int anchoRaqueta) {
         if (posX + anchoRaqueta < width) {
-            posX = posX + 12;
+            posX = posX + ancho / 6;
         }
     }
 
     public void moverIzquierda() {
         if (posX >= 0) {
-            posX = posX - 12;
+            posX = posX - ancho / 6;
         }
     }
 
@@ -144,37 +144,77 @@ public class Sprite {
      * @return true o false, dependiendo de si hay colisión o no.
      */
 
-    public boolean colisionar3(Sprite sprite) {
-        boolean colisionX = posX < sprite.posX ? (posX + ancho >= sprite.posX) : (sprite.posX + sprite.ancho >= posX);
-        boolean colisionY = posY < sprite.posY ? (posY + alto >= sprite.posY) : (sprite.posY + sprite.alto >= posY);
+    /**
+     * Metodo para saber cuando los sprites colisionan.
+     * 
+     * @param sprite Sprite
+     * @return true o false, dependiendo de si hay colisión o no.
+     */
+    public boolean hayColision(Sprite sprite) {
+        boolean colisionX = posX <= sprite.posX ? (posX + ancho >= sprite.posX) : (sprite.posX + sprite.ancho >= posX);
+        boolean colisionY = posY <= sprite.posY ? (posY + alto >= sprite.posY) : (sprite.posY + sprite.alto >= posY);
 
         return colisionX && colisionY;
     }
 
-    public boolean colisionar(Sprite sprite) {
-        boolean colision = false;
-        // Por arriba
-        if (posY + alto > sprite.getPosY() && posY < sprite.getPosY() + sprite.getAlto()
-                && posX + ancho > sprite.getPosX() && posX < sprite.getPosX() + sprite.getAncho()) {
-            velY = velY * -1;
-            colision = true;
-        }
+    public boolean hayColisionDosJugadores(Sprite sprite) {
+        boolean colisionX = posX <= sprite.posX ? (posX + ancho >= sprite.posX) : (sprite.posX + sprite.ancho >= posX);
+        boolean colisionY = posY <= sprite.posY + sprite.alto ? (posY >= sprite.posY + sprite.alto)
+                : (sprite.posY + sprite.alto >= posY);
 
-        // Por la derecha
-        if (posX < sprite.getPosX() + sprite.getAncho() && posX > sprite.getPosX()
-                && posY < sprite.getPosY() + sprite.getAlto() && posY + alto > sprite.getPosY()
-                || posY > sprite.getPosY()) {
-            velX += 1;
-            colision = true;
-        }
+        return colisionX && colisionY;
+    }
 
-        // Por la izquierda
-        if (posX + ancho > sprite.getPosX() && posX < sprite.getPosX() + sprite.getAncho()
-                && posY + alto > sprite.getPosY() && posY > sprite.getPosY() + sprite.getAlto()) {
-            velX = velX * -1;
-            colision = true;
+    public void colisionar(Sprite sprite) {
+        if (posY + alto >= sprite.getPosY()) {
+            velY = -Math.abs(velY);
+            if ((posY + getAlto()) - sprite.getPosY() > 0) {
+                setPosY(getPosY() - ((posY + getAlto()) - sprite.getPosY()));
+            }
+        } else {
+            if (posX >= sprite.getPosY() || (posX + alto >= sprite.getPosY())) {
+                velX = Math.abs(velX);
+                if ((posX + (alto / 2) - sprite.getPosX() + sprite.getAlto() > 0)
+                        && (posY + (alto / 2) > (sprite.getPosY() - sprite.getAlto())
+                                && posY + (alto / 2) < (sprite.getPosY() + sprite.getAlto()))) {
+                    setPosY(getPosY() - ((posY - getAlto()) - sprite.getPosY()));
+                }
+            }
+            if (posX <= sprite.getPosX() || posX + alto < sprite.getPosX()) {
+                velY = -Math.abs(velY);
+                if ((posX + (alto / 2) + ancho - sprite.getPosX() > 0)
+                        && (posY + (alto / 2) > (sprite.getPosY() - sprite.getAlto())
+                                && posY + (alto / 2) < (sprite.getPosY() + sprite.getAlto()))) {
+                    setPosY(getPosY() - ((posY - getAlto()) - sprite.getPosY()));
+                }
+            }
         }
-        return colision;
+    }
+
+    public void colisionarDosJugadores(Sprite sprite) {
+        if (posY <= sprite.getPosY() + sprite.getAlto()) {
+            velY = Math.abs(velY);
+            if (posY - sprite.getPosY() + sprite.getAlto() < 0) {
+                setPosY(getPosY() + ((posY - sprite.getPosY() + sprite.getAlto())));
+            }
+        } else {
+            if (posX >= sprite.getPosY() + sprite.getAlto() || (posX + alto >= sprite.getPosY() + sprite.getAlto())) {
+                velX = -Math.abs(velX);
+                if ((posX + (alto / 2) - sprite.getPosX() + sprite.getAncho() > 0)
+                        && (posY + (alto / 2) > (sprite.getPosY() - sprite.getAlto())
+                                && posY + (alto / 2) < (sprite.getPosY() + sprite.getAlto()))) {
+                    setPosY(getPosY() + ((posY + sprite.getAlto())));
+                }
+            }
+            if (posX <= sprite.getPosX() || posX + alto <= sprite.getPosX()) {
+                velY = Math.abs(velY);
+                if ((posX + (alto / 2) + ancho - sprite.getPosX() > 0)
+                        && (posY + (alto / 2) > (sprite.getPosY() - sprite.getAlto())
+                                && posY + (alto / 2) < (sprite.getPosY() + sprite.getAlto()))) {
+                    setPosY(getPosY() + ((posY + sprite.getAlto())));
+                }
+            }
+        }
     }
 
     /** Getters y Setters */

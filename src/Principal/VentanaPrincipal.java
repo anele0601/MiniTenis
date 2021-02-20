@@ -4,9 +4,15 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 
 /**
- * Ventana Principal.
+ * Ventana Principal. Controla la apariencia de la ventana del juego e
+ * inicializa sus componentes.
+ * 
+ * @author Elena Nofuentes
+ * @since 20-02-2021
+ * @see 1.2 {@link #panelJuego}
  */
 public class VentanaPrincipal {
+	/** Atributos de la clase */
 	// La ventana principal, en este caso, guarda todos los componentes:
 	private JFrame ventana;
 	private PanelJuego panelJuego;
@@ -28,7 +34,6 @@ public class VentanaPrincipal {
 	public void inicializarComponentes() {
 		// Definimos el layout:
 		ventana.setLayout(new GridLayout(1, 1));
-
 		// PANEL JUEGO
 		panelJuego = new PanelJuego();
 		ventana.add(panelJuego);

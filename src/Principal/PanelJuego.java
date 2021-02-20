@@ -44,7 +44,6 @@ public class PanelJuego extends JPanel implements Runnable, MouseListener, Mouse
             public void keyReleased(KeyEvent e) {
                 pantalla.soltarTeclado(e);
             }
-
         });
         new Thread(this).start();
     }

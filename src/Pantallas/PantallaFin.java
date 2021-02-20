@@ -1,13 +1,10 @@
 package Pantallas;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.Color;
-import java.awt.Font;
-
-import Principal.Interface;
-import Principal.PanelJuego;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,11 +12,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Generico.Utilidades;
-
-import java.awt.Image;
+import Principal.Interface;
+import Principal.PanelJuego;
 
 /**
- * Clase PantallaFin.
+ * Clase PantallaFin. Será la pantalla que se mostrará cuando juegue un jugador
+ * y pierda la partida por no darle a la pelota.
+ * 
+ * @author Elena Nofuentes
  */
 public class PantallaFin implements Interface {
     /** Atributos de la clase */
@@ -63,7 +63,7 @@ public class PantallaFin implements Interface {
         g.drawRect(125, panel.getHeight() / 2 - 75, 240, 150);
         g.drawRect(120, panel.getHeight() / 2 - 80, 250, 160);
         g.setColor(Utilidades.ROJO);
-        g.drawString("Puntuación : " + puntuacion, 140, (panel.getHeight() / 2) + 40);
+        g.drawString("Puntuación : " + puntuacion, 136, (panel.getHeight() / 2) + 40);
         g.setColor(Utilidades.NEGRO);
         g.setFont(Utilidades.FUENTE_PEQUE);
         g.drawString("- Pulsa para volver a jugar - ", 115, (panel.getHeight() / 2) + 125);
@@ -110,13 +110,9 @@ public class PantallaFin implements Interface {
 
     @Override
     public void pulsarTeclado(KeyEvent e) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void soltarTeclado(KeyEvent e) {
-        // TODO Auto-generated method stub
-
     }
 }
