@@ -8,7 +8,9 @@ En la pantalla de inicio podrémos elegir si queremos jugar uno o dos jugadores.
 
 En el modo un jugador, tendrémos que rebotar la pelota cuantas veces podamos, ¡cuidado!
 no todo es lo que parece.
-Si llegamos a rebotar las pelotas 70 veces, ganaremos el juego.
+
+Si llegamos a rebotar las pelotas 70 veces ganaremos el juego.
 
 En el modo dos jugadores, podrémos jugar contra un amigo. ¿Quién fallará?
-Intentar rebotar la pelota el mayor número de veces posibles y si llegamos a 100 ganaremos la partida.
+
+Intentar rebotar la pelota el mayor número de veces posibles y si llegamos a 100 ganaremos el juego.
