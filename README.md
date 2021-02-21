@@ -11,4 +11,4 @@ no todo es lo que parece.
 Si llegamos a rebotar las pelotas 70 veces, ganaremos el juego.
 
 En el modo dos jugadores, podrémos jugar contra un amigo. ¿Quién fallará?
-Intentar rebotar la pelota el mayor número de veces posibles y si llegais a 100 ganaréis la partida.
+Intentar rebotar la pelota el mayor número de veces posibles y si llegamos a 100 ganaremos la partida.
