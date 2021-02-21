@@ -25,8 +25,8 @@ import Principal.Sprite;
  * pelotas a la partida {@link #sumarPelota()}, a su vez, se añadirán "Pelotas
  * Fantasma" que se moveran por la pantalla para engañár a los jugadores, ya que
  * no podremos golpearlas con la raqueta ni nos harán perder la partida. Además,
- * según avance el tiempo, se aumentará la velocidad de las pelotas y aparecerá
- * una pelota más grande.
+ * según avance el tiempo, se aumentará la velocidad de las pelotas
+ * {@link #aumentarVelocidad()} y aparecerá una pelota más grande.
  * 
  * @author Elena Nofuentes
  * @since 20-02-2021
@@ -74,7 +74,7 @@ public class PantallaJuego implements Interface {
         // 1 jugador
         if (!jugador) {
             pelota = new Sprite("imagenes/pelota.png", TAMA_PELOTA, TAMA_PELOTA, 10, 10, 5, 5);
-            raqueta = new Sprite(Utilidades.NEGRO, 100, 20, (panel.getWidth() / 2) - 50, panel.getHeight() / 2 + 240, 4,
+            raqueta = new Sprite(Utilidades.NEGRO, 100, 15, (panel.getWidth() / 2) - 50, panel.getHeight() / 2 + 240, 4,
                     0);
         } else {
             // 2 jugadores
@@ -104,12 +104,14 @@ public class PantallaJuego implements Interface {
             raquetaDos.estampar(g);
         }
         // Pintamos la puntuación
-        g.setColor(Utilidades.VERDE);
-        g.setFont(Utilidades.FUENTE_PEQUE);
-        g.drawString("" + puntuacion, panel.getWidth() - 40, panel.getHeight() - 20);
+        g.setColor(Utilidades.BLANCO);
+        g.setFont(Utilidades.FUENTE_MEDIANA);
+        g.drawString("" + puntuacion, panel.getWidth() - 40, panel.getHeight() - 30);
 
         // Pintamos el tiempo
-        g.drawString(tiempo = formato.format((System.nanoTime() - contadorT) / 1e9), 30, 30);
+        g.setFont(Utilidades.FUENTE_PEQUE);
+        g.drawString(tiempo = formato.format((System.nanoTime() - contadorT) / 1e9), 25, 30);
+
         // Pintamos las pelotasFantamas
         if (pelotaFantasmaUno != null) {
             pelotaFantasmaUno.estampar(g);
@@ -128,7 +130,7 @@ public class PantallaJuego implements Interface {
      * @param g gráfico.
      */
     private void rellenarFondo(Graphics g) {
-        g.setColor(Utilidades.BLANCO);
+        g.setColor(Utilidades.VERDE_CLARITO);
         g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
     }
 
@@ -198,8 +200,12 @@ public class PantallaJuego implements Interface {
         comprobacionesColisiones();
         moverSprite();
         sumarPelota();
-        if (tiempo.contains("65,0") || tiempo.contains("80,0") || tiempo.contains("100,0")) {
+        if (tiempo.contains("65,0") || tiempo.contains("80,0") || tiempo.contains("95,0")) {
             aumentarVelocidad();
+        }
+        // Ganar juego
+        if (puntuacion == 70 || jugador && puntuacion == 100) {
+            panel.setPantalla(new PantallaGanar(panel, jugador));
         }
     }
 
@@ -218,11 +224,13 @@ public class PantallaJuego implements Interface {
                 } else {
                     // Comprobación para un jugador.
                     if (pelotas.get(i).hayColision(raqueta)) {
+                        Utilidades.reproducirSonidos("sonidos/pelota.wav");
                         pelotas.get(i).colisionar(raqueta);
                         puntuacion++;
                     }
                     // Comprobación para dos jugadores.
                     if (jugador && pelotas.get(i).hayColision(raquetaDos)) {
+                        Utilidades.reproducirSonidos("sonidos/pelota.wav");
                         pelotas.get(i).colisionarDosJugadores(raquetaDos);
                         puntuacion++;
                     }

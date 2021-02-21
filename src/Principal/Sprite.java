@@ -14,7 +14,7 @@ import java.io.IOException;
  * 
  * @author Elena Nofuentes
  * @since 20-02-2021
- * @version 2.4
+ * @version 5.1
  * 
  */
 
@@ -164,9 +164,17 @@ public class Sprite {
      * Método que comprueba por donde se han realizado las colisiones en el modo 1
      * jugador. En este caso las colisiones pueden ser por arriba, por la derecha o
      * por la izquierda.
+     * 
+     * Se controla desde donde viene la pelota respecto a la barra en el momento que
+     * realiza la colisión, para que según la posición de la pelota respecto a la
+     * barra, se modifique la velocidad de la pelota tanto en la y como en la x para
+     * conseguir que la pelota haga un efecto de rebote y salga despedida en sentido
+     * contrario al de la barra.
+     * 
+     * @param sprite, Raqueta con la que colisiona la pelota.
      */
     public void colisionar(Sprite sprite) {
-        // ARRIBA
+        // Arriba
         if (posY + alto >= sprite.getPosY() && posX + (ancho / 2) > sprite.getPosX()
                 && posX + (ancho / 2) < sprite.getPosX() + sprite.getAncho()) {
             velY = -Math.abs(velY);
@@ -175,7 +183,7 @@ public class Sprite {
             }
 
         } else {
-            // DERECHA
+            // Derecha
             if (posX <= sprite.getPosX() + sprite.getAncho() && (posX + ancho >= sprite.getPosX() + sprite.getAncho()
                     && posY < sprite.getPosY() + sprite.getAlto())) {
                 velY = -Math.abs(velY);
@@ -187,7 +195,7 @@ public class Sprite {
                     }
                 }
             }
-            // IZQUIERDA
+            // Izquierda
             if (posX + ancho >= sprite.getPosX()
                     && (posX < sprite.getPosX() && posY < sprite.getPosY() + sprite.getAlto())) {
                 velY = -Math.abs(velY);
@@ -206,6 +214,14 @@ public class Sprite {
      * Método que comprueba por donde se han realizado las colisiones en el modo 2
      * jugador. En este caso las colisiones pueden ser por abajo, por la derecha o
      * por la izquierda.
+     * 
+     * Se controla desde donde viene la pelota respecto a la barra en el momento que
+     * realiza la colisión, para que según la posición de la pelota respecto a la
+     * barra, se modifique la velocidad de la pelota tanto en la y como en la x para
+     * conseguir que la pelota haga un efecto de rebote y salga despedida en sentido
+     * contrario al de la barra.
+     * 
+     * @param sprite, Raqueta con la que colisiona la pelota.
      */
     public void colisionarDosJugadores(Sprite sprite) {
         // ABAJO
@@ -224,7 +240,9 @@ public class Sprite {
                 if ((posX - sprite.getPosX()) + sprite.getAncho() < 0) {
                     posX = (posX + (sprite.getPosX() + sprite.getAncho() - posX));
                 }
-
+                // Subimos la bola para que en caso de que el usuario mantenga la barra en
+                // movimiento,
+                // se realice bien la colisión y la pelota salga despedida.
                 if ((sprite.getPosY() + sprite.getAlto()) - posY > 0) {
                     posY = (posY + (sprite.getPosY() + sprite.getAlto() - posY));
                 }
@@ -237,13 +255,14 @@ public class Sprite {
                 if ((posX + ancho) - sprite.getPosX() < 0) {
                     posX = (posX - (posX + ancho - sprite.getPosX()));
                 }
-
+                // Subimos la bola para que en caso de que el usuario mantenga la barra en
+                // movimiento,
+                // se realice bien la colisión y la pelota salga despedida.
                 if ((sprite.getPosY() + sprite.getAlto()) - posY > 0) {
                     posY = (posY + (sprite.getPosY() + sprite.getAlto() - posY));
                 }
             }
         }
-
     }
 
     /** Getters y Setters */
@@ -310,5 +329,4 @@ public class Sprite {
     public void setVelY(int velY) {
         this.velY = velY;
     }
-
 }

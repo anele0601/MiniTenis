@@ -20,6 +20,8 @@ import Principal.PanelJuego;
  * y pierda la partida por no darle a la pelota. Permite volver a jugar,
  * haciendo click. Controlando si la partida era de 1 o 2 jugadores.
  * 
+ * Esta pantalla emite un sonido de gameOver.
+ * 
  * @author Elena Nofuentes
  * @since 20-02-2021
  * @version 1.4
@@ -60,6 +62,7 @@ public class PantallaFin implements Interface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Utilidades.reproducirSonidos("sonidos/perder.wav");
         redimensionarPantalla();
     }
 
