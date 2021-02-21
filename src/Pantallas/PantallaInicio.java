@@ -20,6 +20,9 @@ import java.awt.Image;
  * permite elegir 1 o 2 jugadores pulsando las teclas correspondientes. Una vez
  * pulsemos 1 ó 2, cambiaremos la pantalla a PantallaJuego.
  * 
+ * Esta pantalla cuenta con pelotas moviendose y cambio de colores en los textos
+ * para hacerla más llamativa.
+ * 
  * @author Elena Nofuentes
  * @since 20-02-2021
  * @version 2.3
@@ -28,6 +31,7 @@ import java.awt.Image;
 public class PantallaInicio implements Interface {
     /** Atributos de la clase */
     private final int N_PELOTAS = 3;
+    private final int TAMA_PELOTA = 50;
 
     private PanelJuego panel;
     private Color colorLetraInicio;
@@ -70,8 +74,8 @@ public class PantallaInicio implements Interface {
                 velX = velocidad();
                 velY = velocidad();
             } while (velX == 0 && velY == 0);
-            pelotas.add(new Sprite("imagenes/pelota.png", 50, 50, 10, 10, velX, velY));
-            pelotas.add(new Sprite("imagenes/pelota.png", 50, 50, 100, 100, velX, velY));
+            pelotas.add(new Sprite("imagenes/pelota.png", TAMA_PELOTA, TAMA_PELOTA, 10, 10, velX, velY));
+            pelotas.add(new Sprite("imagenes/pelota.png", TAMA_PELOTA, TAMA_PELOTA, 100, 100, velX, velY));
         }
         try {
             fondo = ImageIO.read(new File("imagenes/fondoTenis.jpg"));

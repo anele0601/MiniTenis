@@ -17,9 +17,12 @@ import Principal.PanelJuego;
 
 /**
  * Clase PantallaFin. Será la pantalla que se mostrará cuando juegue un jugador
- * y pierda la partida por no darle a la pelota.
+ * y pierda la partida por no darle a la pelota. Permite volver a jugar,
+ * haciendo click. Controlando si la partida era de 1 o 2 jugadores.
  * 
  * @author Elena Nofuentes
+ * @since 20-02-2021
+ * @version 1.4
  */
 public class PantallaFin implements Interface {
     /** Atributos de la clase */
@@ -31,6 +34,8 @@ public class PantallaFin implements Interface {
     private Image fondoR;
     private BufferedImage fondo;
 
+    private boolean controlJugadores;
+
     /** Constructor */
     public PantallaFin(PanelJuego panel, int cont, String tiempo) {
         this.panel = panel;
@@ -39,6 +44,15 @@ public class PantallaFin implements Interface {
         inicializarPantalla();
     }
 
+    public PantallaFin(PanelJuego panel, int cont, String tiempo, boolean jugador) {
+        this.panel = panel;
+        puntuacion = cont;
+        this.tiempo = tiempo;
+        controlJugadores = jugador;
+        inicializarPantalla();
+    }
+
+    /** Método que inicializar los componentes de la pantalla */
     @Override
     public void inicializarPantalla() {
         try {
@@ -93,16 +107,22 @@ public class PantallaFin implements Interface {
     /**
      * Método que controla si pulsamos en el ratón. Si pulsamos significa que
      * queremos volver a jugar, por lo que establecemos otra pantalla de juego.
+     * Diferencia si la partida era de uno o dos jugadores.
      */
     @Override
     public void pulsarRaton(MouseEvent e) {
-        panel.setPantalla(new PantallaJuego(panel));
+        if (controlJugadores) {
+            panel.setPantalla(new PantallaJuego(panel, controlJugadores));
+        } else {
+            panel.setPantalla(new PantallaJuego(panel));
+        }
     }
 
     @Override
     public void moverRaton(MouseEvent e) {
     }
 
+    /** Método que redimensiona la imagen de fondo de pantalla */
     @Override
     public void redimensionarPantalla() {
         fondoR = fondo.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);

@@ -16,10 +16,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.*;
 
 /**
- * Clase Panel Juego.
+ * Clase Panel Juego. Maneja el paso de pantallas. En el constructor están
+ * implementados todos los listener necesarios para el correcto funcionamiento
+ * del juego.
  * 
  * @author Elena Nofuentes
- * @version 1.3
+ * @since 20-02-2021
+ * @version 1.4
  */
 
 public class PanelJuego extends JPanel implements Runnable, MouseListener, MouseMotionListener, ComponentListener {
@@ -48,19 +51,37 @@ public class PanelJuego extends JPanel implements Runnable, MouseListener, Mouse
         new Thread(this).start();
     }
 
+    /** Método que pinta los componentes de la pantalla */
     @Override
     public void paintComponent(Graphics g) {
         pantalla.pintarPantalla(g);
     }
 
+    /** Método que controla cuando presionamos el ratón */
     @Override
     public void mousePressed(MouseEvent e) {
         pantalla.pulsarRaton(e);
     }
 
+    /** Método que redimensiona la pantalla. */
     @Override
     public void componentResized(ComponentEvent e) {
         pantalla.redimensionarPantalla();
+    }
+
+    /** Método para cambiar la pantalla */
+    public void setPantalla(Interface pantalla) {
+        this.pantalla = pantalla;
+    }
+
+    /** Método que define la acción del hilo */
+    @Override
+    public void run() {
+        while (true) {
+            pantalla.ejecutarFrame();
+            repaint();
+            Toolkit.getDefaultToolkit().sync();
+        }
     }
 
     @Override
@@ -97,20 +118,5 @@ public class PanelJuego extends JPanel implements Runnable, MouseListener, Mouse
 
     @Override
     public void componentHidden(ComponentEvent e) {
-    }
-
-    /** Método para cambiar la pantalla */
-    public void setPantalla(Interface pantalla) {
-        this.pantalla = pantalla;
-    }
-
-    /** Método que define la acción del hilo */
-    @Override
-    public void run() {
-        while (true) {
-            pantalla.ejecutarFrame();
-            repaint();
-            Toolkit.getDefaultToolkit().sync();
-        }
     }
 }

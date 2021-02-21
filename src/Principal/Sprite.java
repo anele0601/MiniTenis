@@ -13,6 +13,8 @@ import java.io.IOException;
  * aspecto y controla su movimiento.
  * 
  * @author Elena Nofuentes
+ * @since 20-02-2021
+ * @version 2.4
  * 
  */
 
@@ -60,7 +62,6 @@ public class Sprite {
         Graphics g = buffer.getGraphics();
         g.setColor(color);
         g.fillRect(0, 0, ancho, alto);
-
     }
 
     /**
@@ -100,7 +101,7 @@ public class Sprite {
 
         // Movimiento derecha horizontalmente.
         if (posX + ancho >= width) {
-            velX = (Math.abs(velX) * -1);
+            velX = -(Math.abs(velX));
         }
         // Movimiento izquierda horizontalmente.
         if (posX < 0) {
@@ -108,7 +109,7 @@ public class Sprite {
         }
         // Movimiento arriba verticalmente.
         if (posY + ancho >= height) {
-            velY = (Math.abs(velY) * -1);
+            velY = -(Math.abs(velY));
         }
         // Movimiento hacia abajo verticalmente.
         if (posY < 0) {
@@ -125,12 +126,21 @@ public class Sprite {
         posX = (posX + velX);
     }
 
+    /**
+     * Método para mover un sprite hacia la derecha.
+     * 
+     * @param width        ancho del panel.
+     * @param anchoRaqueta ancho del sprite que movemos.
+     */
     public void moverDerecha(int width, int anchoRaqueta) {
         if (posX + anchoRaqueta < width) {
             posX = posX + ancho / 6;
         }
     }
 
+    /**
+     * Método para mover un sprite hacia la izquierda.
+     */
     public void moverIzquierda() {
         if (posX >= 0) {
             posX = posX - ancho / 6;
@@ -140,81 +150,100 @@ public class Sprite {
     /**
      * Metodo para saber cuando los sprites colisionan.
      * 
-     * @param sprite Sprite
-     * @return true o false, dependiendo de si hay colisión o no.
-     */
-
-    /**
-     * Metodo para saber cuando los sprites colisionan.
-     * 
-     * @param sprite Sprite
+     * @param sprite Sprite raqueta
      * @return true o false, dependiendo de si hay colisión o no.
      */
     public boolean hayColision(Sprite sprite) {
-        boolean colisionX = posX <= sprite.posX ? (posX + ancho >= sprite.posX) : (sprite.posX + sprite.ancho >= posX);
-        boolean colisionY = posY <= sprite.posY ? (posY + alto >= sprite.posY) : (sprite.posY + sprite.alto >= posY);
+        boolean colisionX = posX <= sprite.posX ? (posX + ancho > sprite.posX) : (sprite.posX + sprite.ancho >= posX);
+        boolean colisionY = posY <= sprite.posY ? (posY + alto > sprite.posY) : (sprite.posY + sprite.alto >= posY);
 
         return colisionX && colisionY;
     }
 
-    public boolean hayColisionDosJugadores(Sprite sprite) {
-        boolean colisionX = posX <= sprite.posX ? (posX + ancho >= sprite.posX) : (sprite.posX + sprite.ancho >= posX);
-        boolean colisionY = posY <= sprite.posY + sprite.alto ? (posY >= sprite.posY + sprite.alto)
-                : (sprite.posY + sprite.alto >= posY);
-
-        return colisionX && colisionY;
-    }
-
+    /**
+     * Método que comprueba por donde se han realizado las colisiones en el modo 1
+     * jugador. En este caso las colisiones pueden ser por arriba, por la derecha o
+     * por la izquierda.
+     */
     public void colisionar(Sprite sprite) {
-        if (posY + alto >= sprite.getPosY()) {
+        // ARRIBA
+        if (posY + alto >= sprite.getPosY() && posX + (ancho / 2) > sprite.getPosX()
+                && posX + (ancho / 2) < sprite.getPosX() + sprite.getAncho()) {
             velY = -Math.abs(velY);
-            if ((posY + getAlto()) - sprite.getPosY() > 0) {
-                setPosY(getPosY() - ((posY + getAlto()) - sprite.getPosY()));
+            if ((posY + alto) - sprite.getPosY() > 0) {
+                posY = (posY - (posY + alto - sprite.getPosY()));
             }
+
         } else {
-            if (posX >= sprite.getPosY() || (posX + alto >= sprite.getPosY())) {
+            // DERECHA
+            if (posX <= sprite.getPosX() + sprite.getAncho() && (posX + ancho >= sprite.getPosX() + sprite.getAncho()
+                    && posY < sprite.getPosY() + sprite.getAlto())) {
+                velY = -Math.abs(velY);
                 velX = Math.abs(velX);
-                if ((posX + (alto / 2) - sprite.getPosX() + sprite.getAlto() > 0)
-                        && (posY + (alto / 2) > (sprite.getPosY() - sprite.getAlto())
-                                && posY + (alto / 2) < (sprite.getPosY() + sprite.getAlto()))) {
-                    setPosY(getPosY() - ((posY - getAlto()) - sprite.getPosY()));
+                if (posX - (sprite.getPosX() + sprite.getAncho()) < 0) {
+                    posX = (posX + (sprite.getPosX() + sprite.getAncho() - posX));
+                    if ((posY + alto) - sprite.getPosY() > 0) {
+                        posY = (posY - (posY + alto - sprite.getPosY()));
+                    }
                 }
             }
-            if (posX <= sprite.getPosX() || posX + alto < sprite.getPosX()) {
+            // IZQUIERDA
+            if (posX + ancho >= sprite.getPosX()
+                    && (posX < sprite.getPosX() && posY < sprite.getPosY() + sprite.getAlto())) {
                 velY = -Math.abs(velY);
-                if ((posX + (alto / 2) + ancho - sprite.getPosX() > 0)
-                        && (posY + (alto / 2) > (sprite.getPosY() - sprite.getAlto())
-                                && posY + (alto / 2) < (sprite.getPosY() + sprite.getAlto()))) {
-                    setPosY(getPosY() - ((posY - getAlto()) - sprite.getPosY()));
+                velX = -Math.abs(velX);
+                if (sprite.getPosX() - (posX + ancho) < 0) {
+                    posX = (posX - ((posX + ancho) - sprite.getPosX()));
+                    if ((posY + alto) - sprite.getPosY() > 0) {
+                        posY = (posY - (posY + alto - sprite.getPosY()));
+                    }
                 }
             }
         }
     }
 
+    /**
+     * Método que comprueba por donde se han realizado las colisiones en el modo 2
+     * jugador. En este caso las colisiones pueden ser por abajo, por la derecha o
+     * por la izquierda.
+     */
     public void colisionarDosJugadores(Sprite sprite) {
-        if (posY <= sprite.getPosY() + sprite.getAlto()) {
+        // ABAJO
+        if (posY <= sprite.getPosY() + sprite.getAlto() && posX + (ancho / 2) > sprite.getPosX()
+                && posX + (ancho / 2) < sprite.getPosX() + sprite.getAncho()) {
             velY = Math.abs(velY);
-            if (posY - sprite.getPosY() + sprite.getAlto() < 0) {
-                setPosY(getPosY() + ((posY - sprite.getPosY() + sprite.getAlto())));
+            if ((sprite.getPosY() + sprite.getAlto()) - posY > 0) {
+                posY = (posY + (sprite.getPosY() + sprite.getAlto() - posY));
             }
         } else {
-            if (posX >= sprite.getPosY() + sprite.getAlto() || (posX + alto >= sprite.getPosY() + sprite.getAlto())) {
-                velX = -Math.abs(velX);
-                if ((posX + (alto / 2) - sprite.getPosX() + sprite.getAncho() > 0)
-                        && (posY + (alto / 2) > (sprite.getPosY() - sprite.getAlto())
-                                && posY + (alto / 2) < (sprite.getPosY() + sprite.getAlto()))) {
-                    setPosY(getPosY() + ((posY + sprite.getAlto())));
+            // DERECHA
+            if (posX <= sprite.getPosX() + sprite.getAncho() && (posX + ancho >= sprite.getPosX() + sprite.getAncho()
+                    && posY < sprite.getPosY() + sprite.getAlto())) {
+                velX = Math.abs(velX);
+                velY = Math.abs(velY);
+                if ((posX - sprite.getPosX()) + sprite.getAncho() < 0) {
+                    posX = (posX + (sprite.getPosX() + sprite.getAncho() - posX));
+                }
+
+                if ((sprite.getPosY() + sprite.getAlto()) - posY > 0) {
+                    posY = (posY + (sprite.getPosY() + sprite.getAlto() - posY));
                 }
             }
-            if (posX <= sprite.getPosX() || posX + alto <= sprite.getPosX()) {
+            // IZQUIERDA
+            if (posX + ancho >= sprite.getPosX()
+                    && (posX < sprite.getPosX() && posY < sprite.getPosY() + sprite.getAlto())) {
                 velY = Math.abs(velY);
-                if ((posX + (alto / 2) + ancho - sprite.getPosX() > 0)
-                        && (posY + (alto / 2) > (sprite.getPosY() - sprite.getAlto())
-                                && posY + (alto / 2) < (sprite.getPosY() + sprite.getAlto()))) {
-                    setPosY(getPosY() + ((posY + sprite.getAlto())));
+                velX = -Math.abs(velX);
+                if ((posX + ancho) - sprite.getPosX() < 0) {
+                    posX = (posX - (posX + ancho - sprite.getPosX()));
+                }
+
+                if ((sprite.getPosY() + sprite.getAlto()) - posY > 0) {
+                    posY = (posY + (sprite.getPosY() + sprite.getAlto() - posY));
                 }
             }
         }
+
     }
 
     /** Getters y Setters */

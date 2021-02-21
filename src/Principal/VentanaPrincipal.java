@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 
 /**
  * Ventana Principal. Controla la apariencia de la ventana del juego e
- * inicializa sus componentes.
+ * inicializa sus componentes. No se puede redimensionar.
  * 
  * @author Elena Nofuentes
  * @since 20-02-2021
